@@ -27,11 +27,11 @@ app.get('/new', (request, response) => {
 // REVIEW: These are routes for making API calls to enact CRUD operations on our database.
 app.get('/articles', (request, response) => {
   client.query(`
-  SELECT articles.title, articles.author, "articles.authorUrl", articles.category,"articles.publishedOn", articles.body, authors.author, "authors.authorUrl" 
-  FROM articles
-  INNER JOIN authors
+  SELECT *
+  FROM authors
+  INNER JOIN articles
     ON articles.author_id=authors.author_id
-  ORDER BY articles.publishedOn`)// select author_id  from articles, authors where article.author_id, author.author_id
+  ORDER BY authors.author;`)// select author_id  from articles, authors where article.author_id, author.author_id
     .then(result => {
       response.send(result.rows);
     })
@@ -44,7 +44,7 @@ app.post('/articles', (request, response) => {
   client.query(
     `INSERT INTO
     authors(author, "authorUrl")
-    VALUES($2, $3)`,
+    VALUES($1, $2)`,
 
     [request.body.author,
       request.body.authorUrl],
@@ -59,29 +59,27 @@ app.post('/articles', (request, response) => {
   function queryTwo() {
     client.query(
       `SELECT author from
-      authors where author_id=3`,
-      [request.body.author],
+      authors where author_id=$1`, [request.body.author],
     
       function(err, result) {
         if (err) console.error(err);
 
         // REVIEW: This is our third query, to be executed when the second is complete. We are also passing the author_id into our third query.
         queryThree(result.rows[0].author_id);
-      }
-    )
+      })
+    
   }
 
   function queryThree(author_id) {
     client.query(
       `INSERT INTO
-      articles(title, author, "authorUrl", category, "publishedOn", body)
-    VALUES($1, $2, $3, $4, $5, $6) where articles.author_id=${author_id}`,
-      [request.body.title,
-        request.body.author,
-        request.body.author_Url,
-        request.body.category,
-        request.body.publishedOn,
-        request.body.body],
+      articles(title, category, "publishedOn", body, author_id)
+    VALUES($1, $2, $3, $4, $5)`,
+    [request.body.title,
+      request.body.category,
+      request.body.publishedOn,
+      request.body.body,
+      author_id],
       function(err) {
         if (err) console.error(err);
         response.send('insert complete');
@@ -92,8 +90,10 @@ app.post('/articles', (request, response) => {
 
 app.put('/articles/:id', function(request, response) {
   client.query(
-    ``,
-    []
+    `INSERT INTO authors (author, "authorUrl")
+    VALUES($1,$2)`,
+    [request.body.author,
+      request.body.authorUrl]
   )
     .then(() => {
       client.query(
