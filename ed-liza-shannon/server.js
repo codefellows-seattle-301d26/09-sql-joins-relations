@@ -34,10 +34,10 @@ app.get('/articles', (request, response) => {
     });
 });
 
-app.post('/articles', (request, response) => {
+app.post('/articles', (req, response) => {
   client.query(
-    '',
-    [],
+    'INSERT INTO authors ("author", "authorUrl") VALUES ($1, $2)',
+    [req.body.author, req.body.authorUrl],
     function(err) {
       if (err) console.error(err);
       // REVIEW: This is our second query, to be executed when this first query is complete.
@@ -47,11 +47,10 @@ app.post('/articles', (request, response) => {
 
   function queryTwo() {
     client.query(
-      ``,
-      [],
+      `SELECT * FROM authors WHERE author=$1;`,
+      [req.params.author],
       function(err, result) {
         if (err) console.error(err);
-
         // REVIEW: This is our third query, to be executed when the second is complete. We are also passing the author_id into our third query.
         queryThree(result.rows[0].author_id);
       }
@@ -60,8 +59,8 @@ app.post('/articles', (request, response) => {
 
   function queryThree(author_id) {
     client.query(
-      ``,
-      [],
+      `INSERT INTO articles ("author_id", title", "category", "publishedOn", "body")`,
+      [author_id,req.body.title, req.body.category, req.body.publishedOn, req.body.body],
       function(err) {
         if (err) console.error(err);
         response.send('insert complete');
