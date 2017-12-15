@@ -19,13 +19,19 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static('./public'));
 
 // REVIEW: These are routes for requesting HTML resources.
+
 app.get('/new', (request, response) => {
   response.sendFile('new.html', {root: './public'});
 });
 
 // REVIEW: These are routes for making API calls to enact CRUD operations on our database.
 app.get('/articles', (request, response) => {
-  client.query(``)
+  client.query(`
+  SELECT *
+  FROM authors
+  INNER JOIN articles
+    ON articles.author_id=authors.author_id
+  ORDER BY authors.author;`)// select author_id  from articles, authors where article.author_id, author.author_id
     .then(result => {
       response.send(result.rows);
     })
@@ -36,8 +42,13 @@ app.get('/articles', (request, response) => {
 
 app.post('/articles', (request, response) => {
   client.query(
-    '',
-    [],
+    `INSERT INTO
+    authors(author, "authorUrl")
+    VALUES($1, $2)`,
+
+    [request.body.author,
+      request.body.authorUrl],
+
     function(err) {
       if (err) console.error(err);
       // REVIEW: This is our second query, to be executed when this first query is complete.
@@ -47,21 +58,29 @@ app.post('/articles', (request, response) => {
 
   function queryTwo() {
     client.query(
-      ``,
-      [],
+      `SELECT * from
+      authors where author=$1`, 
+      [request.body.author],
+    
       function(err, result) {
         if (err) console.error(err);
 
         // REVIEW: This is our third query, to be executed when the second is complete. We are also passing the author_id into our third query.
         queryThree(result.rows[0].author_id);
-      }
-    )
+      })
+    
   }
 
   function queryThree(author_id) {
     client.query(
-      ``,
-      [],
+      `INSERT INTO
+      articles(author_id, title, category, "publishedOn", body)
+    VALUES($1, $2, $3, $4, $5)`,
+      [author_id,
+        request.body.title,
+        request.body.category,
+        request.body.publishedOn,
+        request.body.body],
       function(err) {
         if (err) console.error(err);
         response.send('insert complete');
@@ -72,13 +91,23 @@ app.post('/articles', (request, response) => {
 
 app.put('/articles/:id', function(request, response) {
   client.query(
-    ``,
-    []
+    `UPDATE authors 
+    SET (author, "authorUrl", author_id)
+    VALUES($1, $2, $3) where author_id=$3`,
+    [request.body.author,
+      request.body.authorUrl,
+      request.body.author_id]
   )
     .then(() => {
       client.query(
-        ``,
-        []
+        `UPDATE articles
+        SET (title, category, "publishedOn", body, author_id)
+      VALUES($1, $2, $3, $4, $5) where author_id=$5`,
+        [request.body.title,
+          request.body.category,
+          request.body.publishedOn,
+          request.body.body,
+          request.body.author_id]
       )
     })
     .then(() => {
