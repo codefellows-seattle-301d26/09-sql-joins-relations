@@ -28,15 +28,15 @@ JS
 ## Change Log
 <!-- Use this are to document the iterative changes made to your application as each feature is successfully implemented. Use time stamps. Here's an examples:
 
-12-15-2017 1:19pm 
+12-15-2017 1:19pm
 ## Credits and Collaborations
 <!-- Give credit (and a link) to other people or resources that helped you build this application. -->
-Handlebars.js(http://handlebarsjs.com/)
-jQuery(https://jquery.com/)
-Highlight.js(https://highlightjs.org/)
-Marked.js(https://github.com/chjj/marked)
-NodeJS(https://nodejs.org)
-npm(https://www.npmjs.com/)
+[Handlebars.js](http://handlebarsjs.com/)
+[jQuery](https://jquery.com/)
+[Highlight.js](https://highlightjs.org/)
+[Marked.js](https://github.com/chjj/marked)
+[NodeJS](https://nodejs.org)
+[npm](https://www.npmjs.com/)
 Express
 Postgres
 
