@@ -61,7 +61,7 @@ app.post('/articles', (request, response) => {
 
   function queryThree(author_id) {
     client.query(
-      `  'INSERT INTO articles(author_id, title, category, "publishedOn", body)VALUES ($1, $2,$3,$4,$5)',`,
+      `INSERT INTO articles(author_id, title, category, "publishedOn", body)VALUES ($1, $2, $3, $4, $5),`,
       [request.body.author_id, request.body.title, request.body.category, request.body.publishedOn, request.body.body ],
       function(err) {
         if (err) console.error(err);
@@ -73,13 +73,13 @@ app.post('/articles', (request, response) => {
 
 app.put('/articles/:id', function(request, response) {
   client.query(
-    ``,
-    []
+    `UPDATE authors SET author=$1 "authorUrl"=$2 WHERE authors_id=$3`,
+    [request.body.author, request.body.authorUrl, request.body.author_id]
   )
     .then(() => {
       client.query(
-        ``,
-        []
+      ``
+      []
       )
     })
     .then(() => {
