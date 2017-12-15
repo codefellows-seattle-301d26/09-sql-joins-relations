@@ -58,8 +58,9 @@ app.post('/articles', (request, response) => {
 
   function queryTwo() {
     client.query(
-      `SELECT author from
-      authors where author_id=$1`, [request.body.author],
+      `SELECT * from
+      authors where author=$1`, 
+      [request.body.author],
     
       function(err, result) {
         if (err) console.error(err);
@@ -73,13 +74,13 @@ app.post('/articles', (request, response) => {
   function queryThree(author_id) {
     client.query(
       `INSERT INTO
-      articles(title, category, "publishedOn", body, author_id)
+      articles(author_id, title, category, "publishedOn", body)
     VALUES($1, $2, $3, $4, $5)`,
-    [request.body.title,
-      request.body.category,
-      request.body.publishedOn,
-      request.body.body,
-      author_id],
+      [author_id,
+        request.body.title,
+        request.body.category,
+        request.body.publishedOn,
+        request.body.body],
       function(err) {
         if (err) console.error(err);
         response.send('insert complete');
@@ -90,15 +91,23 @@ app.post('/articles', (request, response) => {
 
 app.put('/articles/:id', function(request, response) {
   client.query(
-    `INSERT INTO authors (author, "authorUrl")
-    VALUES($1,$2)`,
+    `UPDATE authors 
+    SET (author, "authorUrl", author_id)
+    VALUES($1, $2, $3) where author_id=$3`,
     [request.body.author,
-      request.body.authorUrl]
+      request.body.authorUrl,
+      request.body.author_id]
   )
     .then(() => {
       client.query(
-        ``,
-        []
+        `UPDATE articles
+        SET (title, category, "publishedOn", body, author_id)
+      VALUES($1, $2, $3, $4, $5) where author_id=$5`,
+        [request.body.title,
+          request.body.category,
+          request.body.publishedOn,
+          request.body.body,
+          request.body.author_id]
       )
     })
     .then(() => {
