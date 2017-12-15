@@ -1,5 +1,4 @@
 'use strict';
-// dog
 
 const pg = require('pg');
 const fs = require('fs');
@@ -8,7 +7,8 @@ const bodyParser = require('body-parser');
 const PORT = process.env.PORT || 3000;
 const app = express();
 
-const conString = 'postgres://postgres:Toasted@localhost:5432/kilovolt';
+//const conString = 'postgres://postgres:Toasted@localhost:5432/kilovolt';
+const conString = 'postgres://localhost:5432'
 const client = new pg.Client(conString);
 client.connect();
 client.on('error', error => {
@@ -61,8 +61,8 @@ app.post('/articles', (request, response) => {
 
   function queryThree(author_id) {
     client.query(
-      ``,
-      [],
+      `  'INSERT INTO articles(author_id ,title , category,publishedOn,body)VALUES ($1, $2,$3,$4,$5)',`,
+      [request.body.author_id, request.body.title, request.body.category, request.body.publishedOn, request.body.body ],
       function(err) {
         if (err) console.error(err);
         response.send('insert complete');
