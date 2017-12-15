@@ -47,7 +47,7 @@ app.post('/articles', (request, response) => {
 
   function queryTwo() {
     client.query(
-      ``,
+      `SELECT author FROM authors WHERE author=$1`,
       [],
       function(err, result) {
         if (err) console.error(err);
