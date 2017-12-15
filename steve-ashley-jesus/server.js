@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 
 // mac
-// const conString = 'postgres://localhost:5432';
+// const conString = 'postgres://localhost:5432/kilovolt';
 // linux
 const conString = 'postgres://jesus:pony@localhost:5432/kilovolt';
 const client = new pg.Client(conString);
@@ -47,7 +47,8 @@ app.post('/articles', (request, response) => {
   client.query(
     `INSERT INTO
       authors(author, "authorUrl")
-      VALUES ($1, $2);
+      VALUES ($1, $2)
+      ON CONFLICT DO NOTHING;
       `,
     [
       request.body.author,
@@ -62,8 +63,8 @@ app.post('/articles', (request, response) => {
 
   function queryTwo() {
     client.query(
-      ``,
-      [],
+      `SELECT * FROM authors WHERE author=$1;`,
+      [request.body.author],
       function(err, result) {
         if (err) console.error(err);
 
