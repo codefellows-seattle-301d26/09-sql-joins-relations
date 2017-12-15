@@ -4,19 +4,26 @@
 **Version**: 1.0.0
 
 ## Overview
-<!-- Provide a high level overview of what this application is and why you are building it, beyond the fact that it's an assignment for a Code Fellows 301 class. (i.e. What's your problem domain?) -->
+A blog that populates from a database.
 
 ## Getting Started
-<!-- What are the steps that a user must take in order to build this app on their own machine and get it running? -->
+1.Clone repo into your working directory.
+2.use 'npm install' to install dependencies
+3.change the username and password in line 11 of server.js
+4.start up server
 
 ## Architecture
-<!-- Provide a detailed description of the application design. What technologies (languages, libraries, etc) you're using, and any other relevant design information. -->
+HTML
+CSS
+Javascript
+jQuery
+Postgress
+express
+nodemon
+
+
 
 ## Change Log
-Thu Nov 23 10:53:28 2017 -0800: First commit; automated by robots...
-Tue Dec 5 11:12:55 2017 -0800: first commit
-Thu Dec 14 09:18:18 2017 -0800: starter code for day 8
-Fri Dec 15 08:58:23 2017 -0800: Initial development branch clone commit. Copied starter code and installed npm packages.
 Fri Dec 15 09:04:34 2017 -0800: Added MIT license
 Fri Dec 15 09:12:49 2017 -0800: Added the connection string for mac and linux
 Fri Dec 15 10:04:45 2017 -0800: Fixed a bunch of spacing linter errors
@@ -27,5 +34,4 @@ Fri Dec 15 11:23:06 2017 -0800: Added third query part of creating an article th
 Fri Dec 15 12:18:00 2017 -0800: implemented update authors and update articles query and ran CRUD testing
 
 ## Credits and Collaborations
-<!-- Give credit (and a link) to other people or resources that helped you build this application. -->
--->
+https://github.com/codefellows/seattle-301d26/blob/master/09-sql-joins-relations/demos/joins.md
