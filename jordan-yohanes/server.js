@@ -36,7 +36,7 @@ app.get('/articles', (request, response) => {
 
 app.post('/articles', (request, response) => {
   client.query(
-    '',
+    'INSERT INTO articles (author, author_Url) VALUES ($1, $2);',
     [],
     function(err) {
       if (err) console.error(err);
