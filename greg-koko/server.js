@@ -6,11 +6,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const PORT = process.env.PORT || 3000;
 const app = express();
-<<<<<<< HEAD
 const conString = 'postgres://postgres:123@localhost:5433/kilovolt';
-=======
-const conString = 'postgres://postgres:098Nectar!@localhost:5432/kilovolt';
->>>>>>> d99ef56098276107e2516ee0517ff4d66e64d05b
 const client = new pg.Client(conString);
 client.connect();
 client.on('error', error => {
@@ -39,20 +35,12 @@ app.get('/articles', (request, response) => {
 
 app.post('/articles', (request, response) => {
   client.query(
-<<<<<<< HEAD
     `INSERT INTO authors (author, "authorUrl") VALUES ($1, $2);`,
     [
       request.body.author,
       request.body.authorUrl,
     ]
     ,
-=======
-    `INSERT INTO authors(author, "authorUrl") VALUES ($1, $2);`,
-    [
-      request.body.author,
-      request.body.authorUrl
-    ],
->>>>>>> d99ef56098276107e2516ee0517ff4d66e64d05b
     function(err) {
       if (err) console.error(err);
       // REVIEW: This is our second query, to be executed when this first query is complete.
