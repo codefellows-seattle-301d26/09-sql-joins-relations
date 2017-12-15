@@ -25,7 +25,11 @@ app.get('/new', (request, response) => {
 
 // REVIEW: These are routes for making API calls to enact CRUD operations on our database.
 app.get('/articles', (request, response) => {
-  client.query(``)
+  client.query(`SELECT *
+  FROM authors
+  INNER JOIN articles
+  ON articles.author_id=authors.author_id
+  ORDER BY authors.author;`)
     .then(result => {
       response.send(result.rows);
     })
@@ -36,10 +40,10 @@ app.get('/articles', (request, response) => {
 
 app.post('/articles', (req, response) => {
   client.query(
-    'INSERT INTO authors ("author", "authorUrl") VALUES ($1, $2)',
+    'INSERT INTO authors (author, "authorUrl") VALUES ($1, $2);',
     [req.body.author, req.body.authorUrl],
     function(err) {
-      if (err) console.error(err);
+      if (err) console.error('one',err);
       // REVIEW: This is our second query, to be executed when this first query is complete.
       queryTwo();
     }
@@ -48,9 +52,9 @@ app.post('/articles', (req, response) => {
   function queryTwo() {
     client.query(
       `SELECT * FROM authors WHERE author=$1;`,
-      [req.params.author],
+      [req.body.author],
       function(err, result) {
-        if (err) console.error(err);
+        if (err) console.error('two',err);
         // REVIEW: This is our third query, to be executed when the second is complete. We are also passing the author_id into our third query.
         queryThree(result.rows[0].author_id);
       }
@@ -59,10 +63,11 @@ app.post('/articles', (req, response) => {
 
   function queryThree(author_id) {
     client.query(
-      `INSERT INTO articles ("author_id", title", "category", "publishedOn", "body")`,
+      `INSERT INTO articles (author_id, title, category, "publishedOn", body)
+      VALUES ($1, $2, $3, $4, $5);`,
       [author_id,req.body.title, req.body.category, req.body.publishedOn, req.body.body],
       function(err) {
-        if (err) console.error(err);
+        if (err) console.error('three',err);
         response.send('insert complete');
       }
     );
@@ -191,20 +196,6 @@ function loadDB() {
       body TEXT NOT NULL
     );`
   )
-    .then(data => {
-      loadArticles(data);
-    })
-    .catch(err => {
-      console.error(err)
-    });
-
-  client.query(`
-    SELECT *
-    FROM author
-    INNER JOIN articles
-    ON articles.author_id=author.author_id
-    ORDER BY author.author_name
-  `)
     .then(data => {
       loadArticles(data);
     })
