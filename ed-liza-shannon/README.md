@@ -16,6 +16,7 @@
 <!-- Use this are to document the iterative changes made to your application as each feature is successfully implemented. Use time stamps. Here's an examples:
 
 12-15-2017 9:10am - Add readme.
+12-15-2017 9:30am - Add query select from articles.
 
 ## Credits and Collaborations
 <!-- Give credit (and a link) to other people or resources that helped you build this application. -->

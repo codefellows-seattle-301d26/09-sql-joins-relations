@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 const PORT = process.env.PORT || 3000;
 const app = express();
 
-const conString = '';
+const conString = 'postgres://localhost:5432';
 const client = new pg.Client(conString);
 client.connect();
 client.on('error', error => {
@@ -192,4 +192,12 @@ function loadDB() {
     .catch(err => {
       console.error(err)
     });
+
+  client.query(`
+    SELECT *
+    FROM author
+    INNER JOIN book
+    ON book.author_id=author.author_id
+    ORDER BY author.author_name
+  `);
 }
