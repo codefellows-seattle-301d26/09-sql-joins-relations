@@ -10,7 +10,7 @@ const app = express();
 // mac
 // const conString = 'postgres://localhost:5432';
 // linux
-const conString = 'postgres://postgres:1234@localhost:5432/kilovolt';
+const conString = 'postgres://jesus:pony@localhost:5432/kilovolt';
 const client = new pg.Client(conString);
 client.connect();
 client.on('error', error => {
@@ -45,8 +45,14 @@ app.get('/articles', (request, response) => {
 
 app.post('/articles', (request, response) => {
   client.query(
-    '',
-    [],
+    `INSERT INTO
+      authors(author, "authorUrl")
+      VALUES ($1, $2);
+      `,
+    [
+      request.body.author,
+      request.body.authorUrl
+    ],
     function(err) {
       if (err) console.error(err);
       // REVIEW: This is our second query, to be executed when this first query is complete.
