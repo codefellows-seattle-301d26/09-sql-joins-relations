@@ -26,7 +26,22 @@ CSS
 JS
 
 ## Change Log
-<!-- Use this are to document the iterative changes made to your application as each feature is successfully implemented. Use time stamps. Here's an examples:
+Fri Dec 15 09:40:20 2017 -0800: working on app.post
+Fri Dec 15 09:42:27 2017 -0800: database connection line is added
+Fri Dec 15 09:44:44 2017 -0800: database connection line is added
+Fri Dec 15 10:24:19 2017 -0800: finished query2
+Fri Dec 15 10:26:39 2017 -0800: work
+Fri Dec 15 10:54:24 2017 -0800: query3 is done
+Fri Dec 15 10:55:08 2017 -0800: test
+Fri Dec 15 11:04:42 2017 -0800: queryThree done
+Fri Dec 15 11:28:10 2017 -0800: done with part 1 of app.put update
+Fri Dec 15 11:29:20 2017 -0800: tried to aupdate
+Fri Dec 15 11:29:33 2017 -0800: Merge branch 'ozge-cody' of https://github.com/CodeWills/09-sql-joins-relations into ozge-cody
+Fri Dec 15 11:39:28 2017 -0800: articles updated
+Fri Dec 15 11:50:37 2017 -0800: almost done
+Fri Dec 15 12:17:23 2017 -0800: readme is added
+Fri Dec 15 12:41:08 2017 -0800: all done
+Fri Dec 15 13:03:44 2017 -0800: merged code
 
 12-15-2017 1:19pm
 ## Credits and Collaborations
