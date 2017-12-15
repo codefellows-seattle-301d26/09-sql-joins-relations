@@ -7,8 +7,8 @@ const bodyParser = require('body-parser');
 const PORT = process.env.PORT || 3000;
 const app = express();
 
-//const conString = 'postgres://postgres:Toasted@localhost:5432/kilovolt';
-const conString = 'postgres://localhost:5432/kilovolt';
+const conString = 'postgres://postgres:Toasted@localhost:5432/kilovolt';
+// const conString = 'postgres://localhost:5432/kilovolt';
 const client = new pg.Client(conString);
 client.connect();
 client.on('error', error => {
@@ -26,7 +26,7 @@ app.get('/new', (request, response) => {
 
 // REVIEW: These are routes for making API calls to enact CRUD operations on our database.
 app.get('/articles', (request, response) => {
-  client.query(`SELECT * FROM articles INNER JOIN authors ON articles.author_id = authors.author_id`)
+  client.query`SELECT * FROM articles INNER JOIN authors ON articles.author_id = authors.author_id`
     .then(result => {
       response.send(result.rows);
     })
@@ -78,7 +78,7 @@ app.put('/articles/:id', function(request, response) {
   )
     .then(() => {
       client.query(
-        `UPDATE articles SET title=$2, category=$3, "publishedOn" = 4, body=$5)WHERE authors_id=$3`,
+        `UPDATE articles SET author_id=$1 title=$2, category=$3, "publishedOn"=$4, body=$5 WHERE authors_id=$6`,
         [request.body.author_id, request.body.title, request.body.category, request.body.publishedOn, request.body.body ]
       )
     })
