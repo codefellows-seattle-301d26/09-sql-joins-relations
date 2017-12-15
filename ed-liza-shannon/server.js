@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 const PORT = process.env.PORT || 3000;
 const app = express();
 
-const conString = 'postgres://localhost:5432';
+const conString = 'postgres://localhost:5432/kilovolt';
 const client = new pg.Client(conString);
 client.connect();
 client.on('error', error => {
@@ -196,8 +196,14 @@ function loadDB() {
   client.query(`
     SELECT *
     FROM author
-    INNER JOIN book
-    ON book.author_id=author.author_id
+    INNER JOIN articles
+    ON articles.author_id=author.author_id
     ORDER BY author.author_name
-  `);
+  `)
+    .then(data => {
+      loadArticles(data);
+    })
+    .catch(err => {
+      console.error(err)
+    });
 }
