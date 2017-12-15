@@ -47,7 +47,7 @@ app.post('/articles', (request, response) => {
 
   function queryTwo() {
     client.query(
-      `SELECT author FROM authors WHERE author=$1`,
+      `SELECT * FROM authors WHERE author=$1`,
       [],
       function(err, result) {
         if (err) console.error(err);
@@ -60,8 +60,18 @@ app.post('/articles', (request, response) => {
 
   function queryThree(author_id) {
     client.query(
-      ``,
-      [],
+      `INSERT INTO
+      articles(author_id, title, category, "publishedOn", body)
+      SELECT author_id, $1, $2, $3, $4
+      FROM authors
+      WHERE author=$5;`,
+      [
+        request.body.title,
+        request.body.author,
+        request.body.category,
+        request.body.publishedOn,
+        request.body.body
+      ],
       function(err) {
         if (err) console.error(err);
         response.send('insert complete');
