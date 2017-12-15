@@ -7,8 +7,8 @@ const bodyParser = require('body-parser');
 const PORT = process.env.PORT || 3000;
 const app = express();
 
-const conString = 'postgres://postgres:Toasted@localhost:5432/kilovolt';
-// const conString = 'postgres://localhost:5432/kilovolt';
+//const conString = 'postgres://postgres:Toasted@localhost:5432/kilovolt';
+const conString = 'postgres://localhost:5432/kilovolt';
 const client = new pg.Client(conString);
 client.connect();
 client.on('error', error => {
@@ -26,7 +26,7 @@ app.get('/new', (request, response) => {
 
 // REVIEW: These are routes for making API calls to enact CRUD operations on our database.
 app.get('/articles', (request, response) => {
-  client.query`SELECT * FROM articles INNER JOIN authors ON articles.author_id = authors.author_id`
+  client.query(`SELECT * FROM articles INNER JOIN authors ON articles.author_id = authors.author_id`)
     .then(result => {
       response.send(result.rows);
     })
@@ -37,7 +37,7 @@ app.get('/articles', (request, response) => {
 
 app.post('/articles', (request, response) => {
   client.query(
-    'INSERT INTO authors(author, "authorUrl")VALUES ($1, $2) ON CONFLICT DO NOTHING;',
+    'INSERT INTO authors (author, "authorUrl") VALUES ($1, $2) ON CONFLICT DO NOTHING;',
     [request.body.author, request.body.authorUrl],
     function(err) {
       if (err) console.error(err);
