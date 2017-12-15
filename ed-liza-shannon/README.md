@@ -3,22 +3,35 @@
 **Author**: Liza, Shannon, Ed
 **Version**: 1.0.0 (increment the patch/fix version number up if you make more commits past your first submission)
 
+## Shannon's hand is injured so Scott said he did not need any commits in this lab.
+
 ## Overview
-<!-- Provide a high level overview of what this application is and why you are building it, beyond the fact that it's an assignment for a Code Fellows 301 class. (i.e. What's your problem domain?) -->
+This application is a blog with post from various authors and categories. It now loads data from SQL databases.
 
 ## Getting Started
-<!-- What are the steps that a user must take in order to build this app on their own machine and get it running? -->
+They should have a basic understanding of JS, jQuery, Handlebars, forms and SQL. Use nodemon to render site. us npm to install required packages.
 
 ## Architecture
-<!-- Provide a detailed description of the application design. What technologies (languages, libraries, etc) you're using, and any other relevant design information. -->
+HTML
+CSS
+SMACSS
+JS
+jQuery
+Handlebars
+AJAX
+JSON
+SQL
 
 ## Change Log
-<!-- Use this are to document the iterative changes made to your application as each feature is successfully implemented. Use time stamps. Here's an examples:
 
 12-15-2017 9:10am - Add readme.
 12-15-2017 9:30am - Add query select from articles.
+12-15-2017 10:05am - Add query create new article.
+12-15-2017 11:01am - Write SQL query to update author and article
+12-15-2017 11:56am - CRUD testing finished.
+12-15-2017 12:45am - Readme done, fully debugged site
 
 ## Credits and Collaborations
-<!-- Give credit (and a link) to other people or resources that helped you build this application. -->
+Thanks Mike.
 -->
 ```
