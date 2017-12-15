@@ -8,9 +8,9 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 
 // mac
-// const conString = 'postgres://localhost:5432/kilovolt';
+const conString = 'postgres://localhost:5432/kilovolt';
 // linux
-const conString = 'postgres://postgres:1234@localhost:5432/kilovolt';
+// const conString = 'postgres://postgres:1234@localhost:5432/kilovolt';
 const client = new pg.Client(conString);
 client.connect();
 client.on('error', error => {
@@ -94,13 +94,13 @@ app.post('/articles', (request, response) => {
 
 app.put('/articles/:id', function(request, response) {
   client.query(
-    ``,
-    []
+    `UPDATE authors SET author = $1, "authorUrl" = $2 where author_id = $3;`,
+    [request.body.author, request.body.authorUrl, request.body.author_id]
   )
     .then(() => {
       client.query(
-        ``,
-        []
+        `UPDATE articles SET title = $1, category =$2, "publishedOn" =$3, body =$4 where article_id = $5;`,
+        [request.body.title, request.body.category, request.body.publishedOn, request.body.body, request.params.id]
       )
     })
     .then(() => {
