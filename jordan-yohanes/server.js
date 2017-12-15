@@ -36,8 +36,11 @@ app.get('/articles', (request, response) => {
 
 app.post('/articles', (request, response) => {
   client.query(
-    'INSERT INTO articles (author, author_Url) VALUES ($1, $2);',
-    [],
+    'INSERT INTO authors (author, "authorUrl") VALUES ($1, $2);',
+    [
+      request.body.author,
+      request.body.authorUrl
+    ],
     function(err) {
       if (err) console.error(err);
       // REVIEW: This is our second query, to be executed when this first query is complete.
@@ -47,8 +50,10 @@ app.post('/articles', (request, response) => {
 
   function queryTwo() {
     client.query(
-      `SELECT * FROM authors WHERE author=$1`,
-      [],
+      `SELECT * FROM authors WHERE author=$1;`,
+      [
+        request.body.author
+      ],
       function(err, result) {
         if (err) console.error(err);
 
@@ -67,10 +72,10 @@ app.post('/articles', (request, response) => {
       WHERE author=$5;`,
       [
         request.body.title,
-        request.body.author,
         request.body.category,
         request.body.publishedOn,
-        request.body.body
+        request.body.body,
+        request.body.author
       ],
       function(err) {
         if (err) console.error(err);
@@ -82,13 +87,22 @@ app.post('/articles', (request, response) => {
 
 app.put('/articles/:id', function(request, response) {
   client.query(
-    ``,
-    []
+    `UPDATE authors SET author=$1, authorUrl=$2 WHERE article_id=$3;`,
+    [
+      request.body.author,
+      request.body.authorUrl
+    ]
   )
     .then(() => {
       client.query(
-        ``,
-        []
+        `UPDATE articles SET title=$1, author=$2, category=$3, 'publishedOn'=$4, body=$5 WHERE article_id=$5;`,
+        [
+          request.body.title,
+          request.body.author,
+          request.body.category,
+          request.body.publishedOn,
+          request.body.body
+        ]
       )
     })
     .then(() => {
