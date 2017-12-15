@@ -7,7 +7,10 @@ const bodyParser = require('body-parser');
 const PORT = process.env.PORT || 3000;
 const app = express();
 
-const conString = '';
+// mac
+// const conString = 'postgres://localhost:5432';
+// linux
+const conString = 'postgres://postgres:1234@localhost:5432/kilovolt';
 const client = new pg.Client(conString);
 client.connect();
 client.on('error', error => {
