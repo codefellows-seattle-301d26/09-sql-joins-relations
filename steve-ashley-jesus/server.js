@@ -10,7 +10,7 @@ const app = express();
 // mac
 // const conString = 'postgres://localhost:5432/kilovolt';
 // linux
-const conString = 'postgres://jesus:pony@localhost:5432/kilovolt';
+const conString = 'postgres://postgres:1234@localhost:5432/kilovolt';
 const client = new pg.Client(conString);
 client.connect();
 client.on('error', error => {
@@ -76,8 +76,14 @@ app.post('/articles', (request, response) => {
 
   function queryThree(author_id) {
     client.query(
-      ``,
-      [],
+      `
+      INSERT INTO
+      articles(author_id, title, category, "publishedOn", body)
+      SELECT author_id, $1, $2, $3, $4
+      FROM authors
+      WHERE author=$5;
+      `,
+      [request.body.title, request.body.category, request.body.publishedOn, request.body.body, request.body.author],
       function(err) {
         if (err) console.error(err);
         response.send('insert complete');
