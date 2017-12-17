@@ -1,0 +1,17 @@
+{
+  "name": "09-sql-joins-relations",
+  "version": "1.0.0",
+  "description": "fetching data from database",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Cody-Ozge",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "nodemon": "^1.13.2",
+    "pg": "^6.4.2"
+  }
+}
