@@ -24,7 +24,7 @@ app.get('/new', (request, response) => {
 
 // REVIEW: These are routes for making API calls to enact CRUD operations on our database.
 app.get('/articles', (request, response) => {
-  client.query(`SELECT * FROM articles INNER JOIN authors ON articles.author_id = authors.author_id;`)
+  client.query(`SELECT * FROM authors INNER JOIN articles ON articles.author_id = authors.author_id ORDER BY authors.author;`)
     .then(result => {
       response.send(result.rows);
     })
@@ -66,17 +66,13 @@ app.post('/articles', (request, response) => {
     client.query(
       `INSERT INTO
      articles(author_id, title, category, "publishedOn", body)
-     SELECT author_id, $1, $2, $3, $4
-     FROM authors
-     WHERE author_id =$1;`,
+     VALUES ($1, $2, $3, $4, $5);`,
       [
+        author_id,
         request.body.title,
-        request.body.author,
-        request.body.authorUrl,
         request.body.category,
         request.body.publishedOn,
         request.body.body,
-        request.params.id
       ],
       function(err) {
         if (err) console.error(err);
@@ -91,25 +87,23 @@ app.put('/articles/:id', function(request, response) {
     `UPDATE authors
     SET
       author=$2, "authorUrl"=$3
-    WHERE article_id=$7;
+    WHERE article_id=$1;
     `,
     [
+      request.body.id,
       request.body.author,
-      request.body.authorUrl,
-      request.params.id
+      request.body.authorUrl
     ]
   )
     .then(() => {
       client.query(
-        `UPDATE authors
+        `UPDATE articles
         SET
-          title=$1, author=$2, "authorUrl"=$3, category=$4, "publishedOn"=$5, body=$6
-        WHERE article_id=$7;
+          title=$1, category=$2, "publishedOn"=$3, body=$4
+        WHERE article_id=$5;
         `,
         [
           request.body.title,
-          request.body.author,
-          request.body.authorUrl,
           request.body.category,
           request.body.publishedOn,
           request.body.body,
