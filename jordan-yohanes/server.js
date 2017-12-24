@@ -36,7 +36,7 @@ app.get('/articles', (request, response) => {
 
 app.post('/articles', (request, response) => {
   client.query(
-    'INSERT INTO authors (author, "authorUrl") VALUES ($1, $2);',
+    'INSERT INTO authors (author, "authorUrl") VALUES ($1, $2) ON CONFLICT DO NOTHING',
     [
       request.body.author,
       request.body.authorUrl
@@ -67,9 +67,7 @@ app.post('/articles', (request, response) => {
     client.query(
       `INSERT INTO
       articles(author_id, title, category, "publishedOn", body)
-      SELECT author_id, $1, $2, $3, $4
-      FROM authors
-      WHERE author=$5;`,
+      VALUES ($1, $2, $3, $4, $5);`,
       [
         request.body.title,
         request.body.category,
@@ -90,18 +88,20 @@ app.put('/articles/:id', function(request, response) {
     `UPDATE authors SET author=$1, authorUrl=$2 WHERE article_id=$3;`,
     [
       request.body.author,
-      request.body.authorUrl
+      request.body.authorUrl,
+      request.body.author_id
     ]
   )
     .then(() => {
       client.query(
-        `UPDATE articles SET title=$1, author=$2, category=$3, 'publishedOn'=$4, body=$5 WHERE article_id=$5;`,
+        `UPDATE articles SET author_id=$1. title=$2, category=$3, 'publishedOn'=$4, body=$5 WHERE article_id=$6;`,
         [
+          request.body.author_id,
           request.body.title,
-          request.body.author,
           request.body.category,
           request.body.publishedOn,
-          request.body.body
+          request.body.body,
+          request.params.id
         ]
       )
     })
