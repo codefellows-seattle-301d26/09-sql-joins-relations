@@ -67,9 +67,7 @@ app.post('/articles', (request, response) => {
     client.query(
       `INSERT INTO
       articles(author_id, title, category, "publishedOn", body)
-      SELECT author_id, $1, $2, $3, $4
-      FROM authors
-      WHERE author=$5;`,
+      VALUES ($1, $2, $3, $4, $5);`,
       [
         request.body.title,
         request.body.category,
