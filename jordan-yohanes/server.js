@@ -36,7 +36,7 @@ app.get('/articles', (request, response) => {
 
 app.post('/articles', (request, response) => {
   client.query(
-    'INSERT INTO authors (author, "authorUrl") VALUES ($1, $2);',
+    'INSERT INTO authors (author, "authorUrl") VALUES ($1, $2) ON CONFLICT DO NOTHING',
     [
       request.body.author,
       request.body.authorUrl
